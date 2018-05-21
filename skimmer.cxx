@@ -1082,6 +1082,17 @@ double get_kin(const char * kin, double &e_th, double &e_p, double &p_th, double
 		cout << "Assuming mid kinematics\n(LHRS: p="<<e_p<<"GeV, Th="<< e_th<<"rad. RHRS: p="
 			<< p_p<<"GeV, Th="<<p_th<<"rad)"<<endl;
 	}
+	else if (strcmp(kin,"mid2")==0)
+	{
+		// THESE ANGLES UPDATED BASED ON LVDT DATA
+		e_th = 17.8053* TMath::DegToRad(); 
+		e_p  = 3.54334;// GeV/c
+		p_th = -48.8188* TMath::DegToRad(); 
+		p_p  = 1.4805; // GeV/c
+
+		cout << "Assuming mid2 kinematics\n(LHRS: p="<<e_p<<"GeV, Th="<< e_th<<"rad. RHRS: p="
+			<< p_p<<"GeV, Th="<<p_th<<"rad)"<<endl;
+	}
 	else
 	{
 		cerr << "You asked for the following kinematics: " << kin << "\n";
