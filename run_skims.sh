@@ -1,6 +1,6 @@
 #!/bin/bash
 
-for kin in mid fast slow fast2
+for kin in mid fast slow fast2 mid2
 do
     for A in 1H 2H 3H 3He dum
     do
@@ -11,7 +11,7 @@ do
 
 	if [ -e $runlist ]
 	then
-	    for run in {100000..103000}
+	    for run in {100000..100700}
 	    do
 		
 		# Test if that run number exists in this runlist
@@ -20,7 +20,7 @@ do
 		    echo "Working on run $run ..."
 
 		    # Create the skim output file
-		    skim_out=/chafs1/work1/tritium/coinc/skim/${A}_${kin}/skim_${run}.root
+		    skim_out=/volatile/halla/triton/eep_Rootfiles/skimmed/${A}_${kin}/skim_${run}.root
 
 		    # Test if such a skimmed file already exists
 		    if [ -e $skim_out ]
@@ -28,9 +28,9 @@ do
 			echo "File has already been skimmed."
 		    else
 			# Test if at least one replayed file exists
-			if [ -e /chafs1/work1/tritium/Rootfiles/tritium_${run}.root ]
+			if [ -e /volatile/halla/triton/eep_Rootfiles/pass1/tritium_${run}.root ]
 			then
-			    ./skimmer $run "$A" "$kin" /chafs1/work1/tritium/Rootfiles/tritium_${run}*.root
+			    ./skimmer $run "$A" "$kin" /volatile/halla/triton/eep_Rootfiles/pass1/tritium_${run}*.root
 			else
 			    echo "Replayed file is missing. Skipping."
 			fi
