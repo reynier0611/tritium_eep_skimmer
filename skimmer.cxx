@@ -372,7 +372,7 @@ int main(int argc, char ** argv)
 	// -------------------------------------------------------
 	// Make the outfile
 	char outfilename[200];
-	sprintf(outfilename,"/chafs1/work1/tritium/coinc/skim/%s_%s/skim_%d.root",argv[2],argv[3],runNumber);
+	sprintf(outfilename,"/volatile/halla/triton/eep_Rootfiles/skimmed/%s_%s/skim_%d.root",argv[2],argv[3],runNumber);
 	TFile * outfile = new TFile(outfilename,"RECREATE");
 	TTree * outtree = new TTree("sk","skimmed tree");
 
