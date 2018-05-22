@@ -98,13 +98,13 @@ then
   
     skim_out=/volatile/halla/triton/eep_Rootfiles/skimmed/${A}_${kin}/skim_${run}.root
 
-    ## Test if such a skimmed file already exists
-    #if [ -e $skim_out ]
-    #then
-    #    echo "File has already been skimmed. Won't be submitting to the workflow"
-    #else
-    #    swif add-jsub -workflow skimming_eep_${midfix} -create -script ./batch_files/jscript_${run}
-    #fi
+    # Test if such a skimmed file already exists
+    if [ -e $skim_out ]
+    then
+        echo "File has already been skimmed. Won't be submitting to the workflow"
+    else
+        swif add-jsub -workflow skimming_eep_${midfix} -create -script ./batch_files/jscript_${run}
+    fi
 # ------------------------------------------------------------------------------
 
     echo "Job "${run} "has been submited!"
