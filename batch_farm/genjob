@@ -1,0 +1,119 @@
+#!/bin/sh
+
+# Usage: farm_list
+# This script creates batch_run and jscript_run in batch_files directory
+# and submits the job to the farms
+
+username=${USER}@jlab.org    # email which will be notify when the job is done
+
+kine_nuc=$1
+echo $kine_nuc
+midfix=${kine_nuc%_kin.*}
+A=${midfix%_*}
+kin=${midfix#*_}
+
+INFILEDIR=/work/halla/triton/Rey/skimmer/infiles/
+DATAINDIR=/volatile/halla/triton/eep_Rootfiles/pass1/
+# ------------------------------------------------------------------------------
+# Verify if the outdir exists
+OUTDIR="/volatile/halla/triton/eep_Rootfiles/skimmed/"${midfix}
+if ! [ -d ${OUTDIR} ]
+then
+    mkdir ${OUTDIR}
+fi
+echo
+
+# ------------------------------------------------------------------------------
+# Verify if batch_files and .tmp.REPLAY exist
+if ! [ -d batch_files ]
+    then 
+    echo "----------------------------------------------------------------"
+    echo "I need batch_files directory. I am going to create it"
+    echo  
+    mkdir batch_files
+fi 
+echo
+# ------------------------------------------------------------------------------
+echo "Working on isotope $A in $kin kinematics ..."
+# Test if a runlist exists
+runlist=${INFILEDIR}${kine_nuc}
+
+if [ -e $runlist ]
+then
+            for run in {100000..100700}
+            do
+		OUTFILE=${OUTDIR}"/skim_"${run}".root"
+                # Test if that run number exists in this runlist
+                if grep -Fq "$run" $runlist
+                then
+                    echo "Working on run $run ..." 
+
+# ------------------------------------------------------------------------------
+# Write file batch_run
+
+    rm -f batch_files/batch_${run}
+    echo "#!/bin/sh" >> batch_files/batch_${run}
+    echo "source /apps/root/6.12.04/setroot_CUE.bash" >>batch_files/batch_${run}
+    echo "export ANALYZER=/work/halla/triton/Rey/Tritium/analyzer-1.6.0" >>batch_files/batch_${run}
+    echo "export LD_LIBRARY_PATH=\${ANALYZER}::\$ROOTSYS/lib:\${LD_LIBRARY_PATH}" >>batch_files/batch_${run}
+    echo "export PATH=\${ROOTSYS}/bin:\${ANALYZER}:\${PATH}" >>batch_files/batch_${run}
+    echo "export OUT_DIR=skimmed" >>batch_files/batch_${run}
+
+    echo "cd /work/halla/triton/Rey/skimmer" >>batch_files/batch_${run}
+
+    echo "rm -f "${OUTFILE} >>batch_files/batch_${run}
+
+    echo " ">>batch_files/batch_${run}
+    echo "./skimmer "$run" "$A" "$kin" /volatile/halla/triton/eep_Rootfiles/pass1/tritium_"${run}"*.root" >>batch_files/batch_${run}
+
+    echo "cd "${OUTDIR} >>batch_files/batch_${run}
+  
+    chmod +x batch_files/batch_${run}
+    
+    echo "batch_files/batch_"${run}" has been created!"
+    echo " "
+    
+# ------------------------------------------------------------------------------
+# Write the jsub script
+
+    rm -f batch_files/jscript_${run}
+    echo "PROJECT     triton" > batch_files/jscript_${run}
+    echo "COMMAND     /work/halla/triton/Rey/skimmer/batch_farm/batch_files/batch_"${run} >>batch_files/jscript_${run}
+    echo "JOBNAME     H3.${midfix}_skim_"${run} >>batch_files/jscript_${run}
+    echo "TRACK       analysis" >> batch_files/jscript_${run}
+    echo "TIME        500" >>batch_files/jscript_${run}
+    echo "MEMORY      5000 MB" >>batch_files/jscript_${run}
+    echo "OS          centos7" >>batch_files/jscript_${run}
+    echo "SINGLE_JOB:    true" >>batch_files/jscript_${run}
+    
+    echo "batch_files/jscript_"${run}" has been created."
+    echo " " 
+    echo "Now, let us wait for the farms..."
+    echo " "
+
+## ------------------------------------------------------------------------------
+    # Submit job to the farm
+  
+    skim_out=/volatile/halla/triton/eep_Rootfiles/skimmed/${A}_${kin}/skim_${run}.root
+
+    ## Test if such a skimmed file already exists
+    #if [ -e $skim_out ]
+    #then
+    #    echo "File has already been skimmed. Won't be submitting to the workflow"
+    #else
+    #    swif add-jsub -workflow skimming_eep_${midfix} -create -script ./batch_files/jscript_${run}
+    #fi
+# ------------------------------------------------------------------------------
+
+    echo "Job "${run} "has been submited!"
+    echo
+
+    sleep 1
+    
+fi
+done        
+else
+    echo "No runlist file exists. Moving on..."
+fi
+echo
+
