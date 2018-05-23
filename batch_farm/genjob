@@ -64,8 +64,6 @@ then
     echo "rm -f "${OUTFILE} >>batch_files/batch_${run}
 
     echo " ">>batch_files/batch_${run}
-    echo "make clean" >>batch_files/batch_${run}
-    echo "make" >>batch_files/batch_${run}
     echo "./skimmer "$run" "$A" "$kin" /volatile/halla/triton/eep_Rootfiles/pass1/tritium_"${run}"*.root" >>batch_files/batch_${run}
 
     echo "cd "${OUTDIR} >>batch_files/batch_${run}
