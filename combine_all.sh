@@ -2,9 +2,9 @@
 
 # Combines all the skimmed files for a given kinematic and nucleus into one root file
 
-for A in 3H 3He 1H 2H dum Csing  
+for A in 3H 3He 1H 2H dum
 do
-    for kin in mid fast slow fast2
+    for kin in mid fast slow fast2 mid2
     do 
 	if [ -e skim/${A}_${kin} ]
 	then
