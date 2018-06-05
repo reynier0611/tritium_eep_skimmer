@@ -1,5 +1,7 @@
 Welcome to skimmer.
 
+These codes were written for the tritium (e,e'p) experiment.
+
 We know it looks messy, but there is a lot of useful stuff.
 
     Executable programs:

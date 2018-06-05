@@ -35,7 +35,7 @@ int main(int argc, char ** argv)
 	// Establish the output file
 	TFile * outfile = new TFile("combine_out.root","RECREATE");
 	TTree * outtree = new TTree("sk","skimmed tree");
-	
+
 	ofstream outtxt ("eventCounts.txt");
 
 	double 	sk_e_cer		,
@@ -112,6 +112,19 @@ int main(int argc, char ** argv)
 		sk_BCMcharge		,	sk_BCMcurr		,
 		sk_BCMrenew 		;
 
+	double sk_exRaEl_Q2,            sk_exRaEl_W2,           sk_exRaEl_Nu,           sk_exRaEl_ph_q,         sk_exRaEl_th_q, sk_exRaEl_xB,
+	       sk_exRaEl_q3m,           sk_exRaEl_q_x,          sk_exRaEl_q_y,          sk_exRaEl_q_z,          sk_e_exRaEl_th, sk_exRaEl_Pmiss,
+	       sk_exRaEl_Pmiss_x,       sk_exRaEl_Pmiss_y,      sk_exRaEl_Pmiss_z,      sk_exRaEl_Emiss,        sk_p_exRaEl_thWe,
+	       sk_exRaEl_ph_bq,         sk_exRaEl_th_bq,        sk_exRaEl_ph_xq,        sk_exRaEl_th_xq,
+	       sk_e_exRaEl_delta,       sk_e_exRaEl_mom,        sk_e_exRaEl_yptar,
+	       sk_e_exRaEl_xptar,       sk_e_exRaEl_px,         sk_e_exRaEl_py,         sk_e_exRaEl_pz,
+	       sk_p_exRaEl_delta,       sk_p_exRaEl_mom,        sk_p_exRaEl_yptar,
+	       sk_p_exRaEl_xptar,       sk_p_exRaEl_px,         sk_p_exRaEl_py,         sk_p_exRaEl_pz;
+
+	double sk_Ra_Ebeam, sk_RaEl_Ebeam;
+
+	outtree -> Branch("Ra_Ebeam"            ,&sk_Ra_Ebeam           ,"Ra_Ebeam/D"           );
+	outtree -> Branch("RaEl_Ebeam"          ,&sk_RaEl_Ebeam         ,"RaEl_Ebeam/D"         );
 
 	outtree -> Branch("L_prl1"		,&sk_e_prl1		,"L_prl1/D"		);
 	outtree -> Branch("L_prl2"		,&sk_e_prl2		,"L_prl2/D"		);
@@ -133,12 +146,12 @@ int main(int argc, char ** argv)
 	outtree -> Branch("R_xptar"		,&sk_p_xptar		,"R_xptar/D"		);
 	outtree -> Branch("L_gold_xptar"	,&sk_gold_e_xptar	,"L_gold_xptar/D"	);
 	outtree -> Branch("R_gold_xptar"	,&sk_gold_p_xptar	,"R_gold_xptar/D"	);
-	
+
 	outtree -> Branch("L_dp"		,&sk_e_delta		,"L_dp/D"		);
 	outtree -> Branch("R_dp"		,&sk_p_delta		,"R_dp/D"		);
 	outtree -> Branch("L_gold_dp"		,&sk_gold_e_delta	,"L_gold_dp/D"		);
 	outtree -> Branch("R_gold_dp"		,&sk_gold_p_delta	,"R_gold_dp/D"		);
-	
+
 	outtree -> Branch("L_mom"		,&sk_e_mom		,"L_mom/D"		);
 	outtree -> Branch("R_mom"		,&sk_p_mom		,"R_mom/D"		);
 	outtree -> Branch("L_gold_mom"		,&sk_gold_e_mom		,"L_gold_mom/D"		);
@@ -155,14 +168,14 @@ int main(int argc, char ** argv)
 	outtree -> Branch("R_vx"		,&sk_p_x		,"R_vx/D"		);
 	outtree -> Branch("R_vy"		,&sk_p_y		,"R_vy/D"		);
 	outtree -> Branch("R_vz"		,&sk_p_z		,"R_vz/D"		);
-	
+
 	outtree -> Branch("L_px"		,&sk_e_px		,"L_px/D"		);
 	outtree -> Branch("L_py"		,&sk_e_py		,"L_py/D"		);
 	outtree -> Branch("L_pz"		,&sk_e_pz		,"L_pz/D"		);
 	outtree -> Branch("R_px"		,&sk_p_px		,"R_px/D"		);
 	outtree -> Branch("R_py"		,&sk_p_py		,"R_py/D"		);
 	outtree -> Branch("R_pz"		,&sk_p_pz		,"R_pz/D"		);
-	
+
 	outtree -> Branch("L_gold_px"		,&sk_gold_e_px		,"L_gold_px/D"		);
 	outtree -> Branch("L_gold_py"		,&sk_gold_e_py		,"L_gold_py/D"		);
 	outtree -> Branch("L_gold_pz"		,&sk_gold_e_pz		,"L_gold_pz/D"		);
@@ -173,7 +186,7 @@ int main(int argc, char ** argv)
 	outtree -> Branch("t1"			,&sk_t1			,"t1/D"			);
 	outtree -> Branch("t4"			,&sk_t4			,"t4/D"			);
 	outtree -> Branch("tcoinc"		,&sk_tcoinc		,"tcoinc/D"		);
-	
+
 	outtree -> Branch("Pmiss"		,&sk_Pmiss		,"Pmiss/D"		);
 	outtree -> Branch("Emiss"		,&sk_Emiss		,"Emiss/D"		);
 	outtree -> Branch("Pmiss_x"		,&sk_Pmiss_x		,"Pmiss_x/D"		);
@@ -206,7 +219,7 @@ int main(int argc, char ** argv)
 	outtree -> Branch("exRa_th_rq"		,&sk_exRa_th_bq		,"exRa_th_rq/D"		);
 	outtree -> Branch("exRa_ph_xq"		,&sk_exRa_ph_xq		,"exRa_ph_xq/D"		);
 	outtree -> Branch("exRa_th_xq"		,&sk_exRa_th_xq		,"exRa_th_xq/D"		);
-	
+
 	outtree -> Branch("Q2"			,&sk_Q2			,"Q2/D"			);
 	outtree -> Branch("W2"			,&sk_W2			,"W2/D"			);
 	outtree -> Branch("Nu"			,&sk_Nu			,"Nu/D"			);
@@ -271,7 +284,43 @@ int main(int argc, char ** argv)
 	outtree -> Branch("Kin_R_momC"		,&sk_kin_pMomC		,"Kin_R_momC/D"		);
 	outtree -> Branch("Kin_Ebeam"		,&sk_kin_Ebeam		,"Kin_Ebeam/D"		);
 	outtree -> Branch("Kin_Q"		,&sk_kin_Q		,"Kin_Q/D"		);
-	
+
+	outtree -> Branch("exRaEl_Q2"           ,&sk_exRaEl_Q2          ,"exRaEl_Q2/D"          );
+	outtree -> Branch("exRaEl_W2"           ,&sk_exRaEl_W2          ,"exRaEl_W2/D"          );
+	outtree -> Branch("exRaEl_Nu"           ,&sk_exRaEl_Nu          ,"exRaEl_Nu/D"          );
+	outtree -> Branch("exRaEl_ph_q"         ,&sk_exRaEl_ph_q        ,"exRaEl_ph_q/D"        );
+	outtree -> Branch("exRaEl_th_q"         ,&sk_exRaEl_th_q        ,"exRaEl_th_q/D"        );
+	outtree -> Branch("exRaEl_xB"           ,&sk_exRaEl_xB          ,"exRaEl_xB/D"          );
+	outtree -> Branch("exRaEl_q3m"          ,&sk_exRaEl_q3m         ,"exRaEl_q3m/D"         );
+	outtree -> Branch("exRaEl_q_x"          ,&sk_exRaEl_q_x         ,"exRaEl_q_x/D"         );
+	outtree -> Branch("exRaEl_q_y"          ,&sk_exRaEl_q_y         ,"exRaEl_q_y/D"         );
+	outtree -> Branch("exRaEl_q_z"          ,&sk_exRaEl_q_z         ,"exRaEl_q_z/D"         );
+	outtree -> Branch("e_exRaEl_th"         ,&sk_e_exRaEl_th        ,"e_exRaEl_th/D"        );
+	outtree -> Branch("exRaEl_Pmiss"        ,&sk_exRaEl_Pmiss       ,"exRaEl_Pmiss/D"       );
+	outtree -> Branch("exRaEl_Pmiss_x"      ,&sk_exRaEl_Pmiss_x     ,"exRaEl_Pmiss_x/D"     );
+	outtree -> Branch("exRaEl_Pmiss_y"      ,&sk_exRaEl_Pmiss_y     ,"exRaEl_Pmiss_y/D"     );
+	outtree -> Branch("exRaEl_Pmiss_z"      ,&sk_exRaEl_Pmiss_z     ,"exRaEl_Pmiss_z/D"     );
+	outtree -> Branch("exRaEl_Emiss"        ,&sk_exRaEl_Emiss       ,"exRaEl_Emiss/D"       );
+	outtree -> Branch("p_exRaEl_thWe"       ,&sk_p_exRaEl_thWe      ,"p_exRaEl_thWe/D"      );
+	outtree -> Branch("exRaEl_ph_bq"        ,&sk_exRaEl_ph_bq       ,"exRaEl_ph_bq/D"       );
+	outtree -> Branch("exRaEl_th_bq"        ,&sk_exRaEl_th_bq       ,"exRaEl_th_bq/D"       );
+	outtree -> Branch("exRaEl_ph_xq"        ,&sk_exRaEl_ph_xq       ,"exRaEl_ph_xq/D"       );
+	outtree -> Branch("exRaEl_th_xq"        ,&sk_exRaEl_th_xq       ,"exRaEl_th_xq/D"       );
+	outtree -> Branch("e_exRaEl_delta"      ,&sk_e_exRaEl_delta     ,"e_exRaEl_delta/D"     );
+	outtree -> Branch("e_exRaEl_mom"        ,&sk_e_exRaEl_mom       ,"e_exRaEl_mom/D"       );
+	outtree -> Branch("e_exRaEl_yptar"      ,&sk_e_exRaEl_yptar     ,"e_exRaEl_yptar/D"     );
+	outtree -> Branch("e_exRaEl_xptar"      ,&sk_e_exRaEl_xptar     ,"e_exRaEl_xptar/D"     );
+	outtree -> Branch("e_exRaEl_px"         ,&sk_e_exRaEl_px        ,"e_exRaEl_px/D"        );
+	outtree -> Branch("e_exRaEl_py"         ,&sk_e_exRaEl_py        ,"e_exRaEl_py/D"        );
+	outtree -> Branch("e_exRaEl_pz"         ,&sk_e_exRaEl_pz        ,"e_exRaEl_pz/D"        );
+	outtree -> Branch("p_exRaEl_delta"      ,&sk_p_exRaEl_delta     ,"p_exRaEl_delta/D"     );
+	outtree -> Branch("p_exRaEl_mom"        ,&sk_p_exRaEl_mom       ,"p_exRaEl_mom/D"       );
+	outtree -> Branch("p_exRaEl_yptar"      ,&sk_p_exRaEl_yptar     ,"p_exRaEl_yptar/D"     );
+	outtree -> Branch("p_exRaEl_xptar"      ,&sk_p_exRaEl_xptar     ,"p_exRaEl_xptar/D"     );
+	outtree -> Branch("p_exRaEl_px"         ,&sk_p_exRaEl_px        ,"p_exRaEl_px/D"        );
+	outtree -> Branch("p_exRaEl_py"         ,&sk_p_exRaEl_py        ,"p_exRaEl_py/D"        );
+	outtree -> Branch("p_exRaEl_pz"         ,&sk_p_exRaEl_pz        ,"p_exRaEl_pz/D"        );
+
 	outtree -> Branch("BCM_curr"		,&sk_BCMcurr		,"BCM_curr/D"		);
 	outtree -> Branch("BCM_charge"		,&sk_BCMcharge		,"BCM_charge/D"		);
 	outtree -> Branch("BCM_isrenew"		,&sk_BCMrenew		,"BCM_isrenew/D"	);
@@ -310,6 +359,8 @@ int main(int argc, char ** argv)
 		// Set up the tree and branches
 		TTree * thisTree = (TTree*) thisFile->Get("sk");
 
+		thisTree -> SetBranchAddress("Ra_Ebeam"         ,&sk_Ra_Ebeam           );
+		thisTree -> SetBranchAddress("RaEl_Ebeam"       ,&sk_RaEl_Ebeam         );
 
 		thisTree -> SetBranchAddress("L_prl1"		,&sk_e_prl1		);
 		thisTree -> SetBranchAddress("L_prl2"		,&sk_e_prl2		);
@@ -331,12 +382,12 @@ int main(int argc, char ** argv)
 		thisTree -> SetBranchAddress("R_xptar"		,&sk_p_xptar		);
 		thisTree -> SetBranchAddress("L_gold_xptar"	,&sk_gold_e_xptar	);
 		thisTree -> SetBranchAddress("R_gold_xptar"	,&sk_gold_p_xptar	);
-		
+
 		thisTree -> SetBranchAddress("L_dp"		,&sk_e_delta		);
 		thisTree -> SetBranchAddress("R_dp"		,&sk_p_delta		);
 		thisTree -> SetBranchAddress("L_gold_dp"	,&sk_gold_e_delta	);
 		thisTree -> SetBranchAddress("R_gold_dp"	,&sk_gold_p_delta	);
-		
+
 		thisTree -> SetBranchAddress("L_mom"		,&sk_e_mom		);
 		thisTree -> SetBranchAddress("R_mom"		,&sk_p_mom		);
 		thisTree -> SetBranchAddress("L_gold_mom"	,&sk_gold_e_mom		);
@@ -353,14 +404,14 @@ int main(int argc, char ** argv)
 		thisTree -> SetBranchAddress("R_vx"		,&sk_p_x		);
 		thisTree -> SetBranchAddress("R_vy"		,&sk_p_y		);
 		thisTree -> SetBranchAddress("R_vz"		,&sk_p_z		);
-		
+
 		thisTree -> SetBranchAddress("L_px"		,&sk_e_px		);
 		thisTree -> SetBranchAddress("L_py"		,&sk_e_py		);
 		thisTree -> SetBranchAddress("L_pz"		,&sk_e_pz		);
 		thisTree -> SetBranchAddress("R_px"		,&sk_p_px		);
 		thisTree -> SetBranchAddress("R_py"		,&sk_p_py		);
 		thisTree -> SetBranchAddress("R_pz"		,&sk_p_pz		);
-		
+
 		thisTree -> SetBranchAddress("L_gold_px"	,&sk_gold_e_px		);
 		thisTree -> SetBranchAddress("L_gold_py"	,&sk_gold_e_py		);
 		thisTree -> SetBranchAddress("L_gold_pz"	,&sk_gold_e_pz		);
@@ -371,7 +422,7 @@ int main(int argc, char ** argv)
 		thisTree -> SetBranchAddress("t1"		,&sk_t1			);
 		thisTree -> SetBranchAddress("t4"		,&sk_t4			);
 		thisTree -> SetBranchAddress("tcoinc"		,&sk_tcoinc		);
-		
+
 		thisTree -> SetBranchAddress("Pmiss"		,&sk_Pmiss		);
 		thisTree -> SetBranchAddress("Emiss"		,&sk_Emiss		);
 		thisTree -> SetBranchAddress("Pmiss_x"		,&sk_Pmiss_x		);
@@ -404,7 +455,7 @@ int main(int argc, char ** argv)
 		thisTree -> SetBranchAddress("exRa_th_rq"	,&sk_exRa_th_bq		);
 		thisTree -> SetBranchAddress("exRa_ph_xq"	,&sk_exRa_ph_xq		);
 		thisTree -> SetBranchAddress("exRa_th_xq"	,&sk_exRa_th_xq		);
-		
+
 		thisTree -> SetBranchAddress("Q2"		,&sk_Q2			);
 		thisTree -> SetBranchAddress("W2"		,&sk_W2			);
 		thisTree -> SetBranchAddress("Nu"		,&sk_Nu			);
@@ -469,7 +520,43 @@ int main(int argc, char ** argv)
 		thisTree -> SetBranchAddress("Kin_R_momC"	,&sk_kin_pMomC		);
 		thisTree -> SetBranchAddress("Kin_Ebeam"	,&sk_kin_Ebeam		);
 		thisTree -> SetBranchAddress("Kin_Q"		,&sk_kin_Q		);
-		
+
+		thisTree -> SetBranchAddress("exRaEl_Q2"           ,&sk_exRaEl_Q2       );
+		thisTree -> SetBranchAddress("exRaEl_W2"           ,&sk_exRaEl_W2       );
+		thisTree -> SetBranchAddress("exRaEl_Nu"           ,&sk_exRaEl_Nu       );
+		thisTree -> SetBranchAddress("exRaEl_ph_q"         ,&sk_exRaEl_ph_q     );
+		thisTree -> SetBranchAddress("exRaEl_th_q"         ,&sk_exRaEl_th_q     );
+		thisTree -> SetBranchAddress("exRaEl_xB"           ,&sk_exRaEl_xB       );
+		thisTree -> SetBranchAddress("exRaEl_q3m"          ,&sk_exRaEl_q3m      );
+		thisTree -> SetBranchAddress("exRaEl_q_x"          ,&sk_exRaEl_q_x      );
+		thisTree -> SetBranchAddress("exRaEl_q_y"          ,&sk_exRaEl_q_y      );
+		thisTree -> SetBranchAddress("exRaEl_q_z"          ,&sk_exRaEl_q_z      );
+		thisTree -> SetBranchAddress("e_exRaEl_th"         ,&sk_e_exRaEl_th     );
+		thisTree -> SetBranchAddress("exRaEl_Pmiss"        ,&sk_exRaEl_Pmiss    );
+		thisTree -> SetBranchAddress("exRaEl_Pmiss_x"      ,&sk_exRaEl_Pmiss_x  );
+		thisTree -> SetBranchAddress("exRaEl_Pmiss_y"      ,&sk_exRaEl_Pmiss_y  );
+		thisTree -> SetBranchAddress("exRaEl_Pmiss_z"      ,&sk_exRaEl_Pmiss_z  );
+		thisTree -> SetBranchAddress("exRaEl_Emiss"        ,&sk_exRaEl_Emiss    );
+		thisTree -> SetBranchAddress("p_exRaEl_thWe"       ,&sk_p_exRaEl_thWe   );
+		thisTree -> SetBranchAddress("exRaEl_ph_bq"        ,&sk_exRaEl_ph_bq    );
+		thisTree -> SetBranchAddress("exRaEl_th_bq"        ,&sk_exRaEl_th_bq    );
+		thisTree -> SetBranchAddress("exRaEl_ph_xq"        ,&sk_exRaEl_ph_xq    );
+		thisTree -> SetBranchAddress("exRaEl_th_xq"        ,&sk_exRaEl_th_xq    );
+		thisTree -> SetBranchAddress("e_exRaEl_delta"      ,&sk_e_exRaEl_delta  );
+		thisTree -> SetBranchAddress("e_exRaEl_mom"        ,&sk_e_exRaEl_mom    );
+		thisTree -> SetBranchAddress("e_exRaEl_yptar"      ,&sk_e_exRaEl_yptar  );
+		thisTree -> SetBranchAddress("e_exRaEl_xptar"      ,&sk_e_exRaEl_xptar  );
+		thisTree -> SetBranchAddress("e_exRaEl_px"         ,&sk_e_exRaEl_px     );
+		thisTree -> SetBranchAddress("e_exRaEl_py"         ,&sk_e_exRaEl_py     );
+		thisTree -> SetBranchAddress("e_exRaEl_pz"         ,&sk_e_exRaEl_pz     );
+		thisTree -> SetBranchAddress("p_exRaEl_delta"      ,&sk_p_exRaEl_delta  );
+		thisTree -> SetBranchAddress("p_exRaEl_mom"        ,&sk_p_exRaEl_mom    );
+		thisTree -> SetBranchAddress("p_exRaEl_yptar"      ,&sk_p_exRaEl_yptar  );
+		thisTree -> SetBranchAddress("p_exRaEl_xptar"      ,&sk_p_exRaEl_xptar  );
+		thisTree -> SetBranchAddress("p_exRaEl_px"         ,&sk_p_exRaEl_px     );
+		thisTree -> SetBranchAddress("p_exRaEl_py"         ,&sk_p_exRaEl_py     );
+		thisTree -> SetBranchAddress("p_exRaEl_pz"         ,&sk_p_exRaEl_pz     );
+
 		thisTree -> SetBranchAddress("BCM_curr"		,&sk_BCMcurr		);
 		thisTree -> SetBranchAddress("BCM_charge"	,&sk_BCMcharge		);
 		thisTree -> SetBranchAddress("BCM_isrenew"	,&sk_BCMrenew		);
@@ -495,7 +582,7 @@ int main(int argc, char ** argv)
 		{
 			thisTree->GetEvent(event);
 			outtree->Fill();
-			
+
 			// Now let's calculate our current status on numbers
 			double xbCut, thrqCut_hi, thrqCut_lo;
 			if( (abs(sk_kin_eMomC-3.54332)<0.1) && (abs(sk_kin_pMomC-1.4805)<0.1 ) && (abs(sk_kin_eThetaC*180./M_PI- 20.892)<0.1) && (abs(sk_kin_pThetaC*180./M_PI- 48.8094)<0.1) ){
@@ -519,52 +606,52 @@ int main(int argc, char ** argv)
 
 			// Basic cuts for all kinematics
 			if( pow(((sk_p_ytar+1.5*sk_p_ext_yptar)/0.08),2) + pow(((1.5*sk_p_ext_xptar)/0.08),2) <= 1 ){
-			if( pow(((sk_e_ytar+1.5*sk_e_ext_yptar)/0.08),2) + pow(((1.5*sk_e_ext_xptar)/0.08),2) <= 1 ){
-			if ( abs(sk_e_ext_delta)<0.045 &&
-			     abs(sk_p_ext_delta)<0.045 ){
-			if ( ((sk_e_prl1 + sk_e_prl2)/1000.)/(sk_e_ext_mom) > 0.8 && 
-			     ((sk_e_prl1 + sk_e_prl2)/1000.)/(sk_e_ext_mom) < 1.3 ){
-			if( sk_e_z > -0.1 && sk_e_z < 0.11 && 
-			    sk_p_z > -0.1 && sk_p_z < 0.11 &&
-			    TMath::Abs( sk_e_z - sk_p_z - 0.005) < 0.02 ){
-			if( sk_tcoinc > 10) {
-			if( sk_exRa_xB > xbCut ){
-			if( (TMath::RadToDeg() * sk_exRa_th_bq < thrqCut_hi) && (TMath::RadToDeg() * sk_exRa_th_bq > thrqCut_lo ) ){
-			
-				indEv ++;
-				if( (sk_exRa_Pmiss > 0.00) && (sk_exRa_Pmiss < 0.05) ) indEv_0to50++;
-				if( (sk_exRa_Pmiss > 0.05) && (sk_exRa_Pmiss < 0.10) ) indEv_50to100++;
-				if( (sk_exRa_Pmiss > 0.10) && (sk_exRa_Pmiss < 0.15) ) indEv_100to150++;
-				if( (sk_exRa_Pmiss > 0.15) && (sk_exRa_Pmiss < 0.20) ) indEv_150to200++;
-				if( (sk_exRa_Pmiss > 0.20) && (sk_exRa_Pmiss < 0.25) ) indEv_200to250++;
-				if( (sk_exRa_Pmiss > 0.25) && (sk_exRa_Pmiss < 0.30) ) indEv_250to300++;
-				if( (sk_exRa_Pmiss > 0.30) && (sk_exRa_Pmiss < 0.35) ) indEv_300to350++;
-				if( (sk_exRa_Pmiss > 0.35) && (sk_exRa_Pmiss < 0.40) ) indEv_350to400++;
-				if( (sk_exRa_Pmiss > 0.40) && (sk_exRa_Pmiss < 0.45) ) indEv_400to450++;
-				if( (sk_exRa_Pmiss > 0.45) && (sk_exRa_Pmiss < 0.60) ) indEv_450to600++;
-				if( (sk_exRa_Pmiss > 0.60) 			     ) indEv_above600++;
-			}
-			}
-			}
-			}
-			}
-			}
-			}
+				if( pow(((sk_e_ytar+1.5*sk_e_ext_yptar)/0.08),2) + pow(((1.5*sk_e_ext_xptar)/0.08),2) <= 1 ){
+					if ( abs(sk_e_ext_delta)<0.045 &&
+							abs(sk_p_ext_delta)<0.045 ){
+						if ( ((sk_e_prl1 + sk_e_prl2)/1000.)/(sk_e_ext_mom) > 0.8 && 
+								((sk_e_prl1 + sk_e_prl2)/1000.)/(sk_e_ext_mom) < 1.3 ){
+							if( sk_e_z > -0.1 && sk_e_z < 0.11 && 
+									sk_p_z > -0.1 && sk_p_z < 0.11 &&
+									TMath::Abs( sk_e_z - sk_p_z - 0.005) < 0.02 ){
+								if( sk_tcoinc > 10) {
+									if( sk_exRa_xB > xbCut ){
+										if( (TMath::RadToDeg() * sk_exRa_th_bq < thrqCut_hi) && (TMath::RadToDeg() * sk_exRa_th_bq > thrqCut_lo ) ){
+
+											indEv ++;
+											if( (sk_exRa_Pmiss > 0.00) && (sk_exRa_Pmiss < 0.05) ) indEv_0to50++;
+											if( (sk_exRa_Pmiss > 0.05) && (sk_exRa_Pmiss < 0.10) ) indEv_50to100++;
+											if( (sk_exRa_Pmiss > 0.10) && (sk_exRa_Pmiss < 0.15) ) indEv_100to150++;
+											if( (sk_exRa_Pmiss > 0.15) && (sk_exRa_Pmiss < 0.20) ) indEv_150to200++;
+											if( (sk_exRa_Pmiss > 0.20) && (sk_exRa_Pmiss < 0.25) ) indEv_200to250++;
+											if( (sk_exRa_Pmiss > 0.25) && (sk_exRa_Pmiss < 0.30) ) indEv_250to300++;
+											if( (sk_exRa_Pmiss > 0.30) && (sk_exRa_Pmiss < 0.35) ) indEv_300to350++;
+											if( (sk_exRa_Pmiss > 0.35) && (sk_exRa_Pmiss < 0.40) ) indEv_350to400++;
+											if( (sk_exRa_Pmiss > 0.40) && (sk_exRa_Pmiss < 0.45) ) indEv_400to450++;
+											if( (sk_exRa_Pmiss > 0.45) && (sk_exRa_Pmiss < 0.60) ) indEv_450to600++;
+											if( (sk_exRa_Pmiss > 0.60) 			     ) indEv_above600++;
+										}
+									}
+								}
+							}
+						}
+					}
+				}
 			}
 		}
 		outtxt        << "\n\n\tFile: " << argv[i] << "\n\tCharge       : " << (*charge)[0] 
-					      << "\n\tIndEv        : " << indEv  
-					      << "\n\tIndEv0to50   : " << indEv_0to50
-					      << "\n\tIndEv50to100 : " << indEv_50to100
-					      << "\n\tIndEv100to150: " << indEv_100to150
-					      << "\n\tIndEv150to200: " << indEv_150to200
-					      << "\n\tIndEv200to250: " << indEv_200to250
-					      << "\n\tIndEv250to300: " << indEv_250to300
-					      << "\n\tIndEv300to350: " << indEv_300to350
-					      << "\n\tIndEv350to400: " << indEv_350to400
-					      << "\n\tIndEv400to450: " << indEv_400to450
-					      << "\n\tIndEv450to600: " << indEv_450to600
-					      << "\n\tIndEvabove600: " << indEv_above600;
+			<< "\n\tIndEv        : " << indEv  
+			<< "\n\tIndEv0to50   : " << indEv_0to50
+			<< "\n\tIndEv50to100 : " << indEv_50to100
+			<< "\n\tIndEv100to150: " << indEv_100to150
+			<< "\n\tIndEv150to200: " << indEv_150to200
+			<< "\n\tIndEv200to250: " << indEv_200to250
+			<< "\n\tIndEv250to300: " << indEv_250to300
+			<< "\n\tIndEv300to350: " << indEv_300to350
+			<< "\n\tIndEv350to400: " << indEv_350to400
+			<< "\n\tIndEv400to450: " << indEv_400to450
+			<< "\n\tIndEv450to600: " << indEv_450to600
+			<< "\n\tIndEvabove600: " << indEv_above600;
 		totEv 	       += indEv;                                  
 		totEv_0to50  += indEv_0to50;
 		totEv_50to100  += indEv_50to100;
@@ -580,28 +667,28 @@ int main(int argc, char ** argv)
 		thisFile->Close();
 	}
 
-			//if( TMath::RadToDeg() * 		// this is how I was calculating theta_rq before but 
-			//    TMath::ACos(			// somehow it's almost correct but not exactly...?
-			//	( sk_exRa_q3m * sk_exRa_q3m - 
-			//		( sk_p_ext_px*sk_exRa_q_x + sk_p_ext_py*sk_exRa_q_y + sk_p_ext_pz*sk_exRa_q_z )) 
-			//	/ ( sk_exRa_q3m * sk_exRa_Pmiss  ) 
-			//    ) 
-			//    < 40.){
+	//if( TMath::RadToDeg() * 		// this is how I was calculating theta_rq before but 
+	//    TMath::ACos(			// somehow it's almost correct but not exactly...?
+	//	( sk_exRa_q3m * sk_exRa_q3m - 
+	//		( sk_p_ext_px*sk_exRa_q_x + sk_p_ext_py*sk_exRa_q_y + sk_p_ext_pz*sk_exRa_q_z )) 
+	//	/ ( sk_exRa_q3m * sk_exRa_Pmiss  ) 
+	//    ) 
+	//    < 40.){
 
 	cout << "\n=================================================== \n";
 	cout 			      << "\n\tTotal Charge    : " << totalCharge[0] 
-        			      << "\n\tTotal Ev        : " << totEv  
-        			      << "\n\tTotal Ev0to50   : " << totEv_0to50
-        			      << "\n\tTotal Ev50to100 : " << totEv_50to100
-        			      << "\n\tTotal Ev100to150: " << totEv_100to150
-        			      << "\n\tTotal Ev150to200: " << totEv_150to200
-        			      << "\n\tTotal Ev200to250: " << totEv_200to250
-        			      << "\n\tTotal Ev250to300: " << totEv_250to300
-        			      << "\n\tTotal Ev300to350: " << totEv_300to350
-        			      << "\n\tTotal Ev350to400: " << totEv_350to400
-        			      << "\n\tTotal Ev400to450: " << totEv_400to450
-        			      << "\n\tTotal Ev450to600: " << totEv_450to600
-        			      << "\n\tTotal Evabove600: " << totEv_above600;
+		<< "\n\tTotal Ev        : " << totEv  
+		<< "\n\tTotal Ev0to50   : " << totEv_0to50
+		<< "\n\tTotal Ev50to100 : " << totEv_50to100
+		<< "\n\tTotal Ev100to150: " << totEv_100to150
+		<< "\n\tTotal Ev150to200: " << totEv_150to200
+		<< "\n\tTotal Ev200to250: " << totEv_200to250
+		<< "\n\tTotal Ev250to300: " << totEv_250to300
+		<< "\n\tTotal Ev300to350: " << totEv_300to350
+		<< "\n\tTotal Ev350to400: " << totEv_350to400
+		<< "\n\tTotal Ev400to450: " << totEv_400to450
+		<< "\n\tTotal Ev450to600: " << totEv_450to600
+		<< "\n\tTotal Evabove600: " << totEv_above600;
 	cout << "\n=================================================== \n";
 
 

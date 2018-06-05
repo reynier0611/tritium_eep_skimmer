@@ -24,24 +24,6 @@ using namespace std;
 //	EPICs value from the Hall A gen tools value??
 //	WHICH ONE DOES THE ANALYZER USE?? -- I bet the db_run.dat file... 
 
-// -------------------------------------------------------
-// Defining values for cuts
-const double TG_Theta_Max =  0.06 ; // Acceptance cut lim theta 40mrad
-const double TG_Theta_Min = -0.06 ; // Acceptance cut lim theta 40mrad
-const double TG_Phi_Max   =  0.030; // Acceptance cut lim phi   25mrad (in-plane?)
-const double TG_Phi_Min   = -0.030; // Acceptance cut lim phi   25mrad (in-plane?)
-const double TG_Dp_Max    =  0.045; // Acceptance cut lim delta 4.5%
-const double TG_Dp_Min    = -0.045; // Acceptance cut lim delta 4.5%
-const double TG_VZ_Max    =  0.10 ; // Vertex cut lim
-const double TG_VZ_Min    = -0.10 ; // Vertex cut lim
-const double GC_Cut_L     = 2000. ; // LHRS Gas Cherenkov ADC sum cut lim
-const double EP_Cut_L     = 0.80  ; // LHRS Energy/Momentum cut lim
-const double EC2_Cut_L    = 300   ; // LHRS Energy deposited cut lim
-const double GC_Cut_R     = 2000. ; // RHRS Gas Cherenkov ADC sum cut lim
-const double EP_Cut_R     = 0.80  ; // RHRS Energy/Momentum cut lim
-const double EC2_Cut_R    = 300   ; // RHRS Energy deposited cut lim
-const int Main_Trigger    = 1     ; // Main trigger cut value
-
 // Physics constants
 const double mP   = 0.938  ;	// Proton
 const double mD   = 1.876  ;	// Deuteron
@@ -177,6 +159,28 @@ int main(int argc, char ** argv)
 		BCMcharge[maxNTracks]		,	BCMcurr[maxNTracks]	,
 		BCMrenew[maxNTracks]		;
 
+
+	double exRaEl_Q2  [maxNTracks], exRaEl_W2  [maxNTracks], exRaEl_Nu  [maxNTracks], exRaEl_ph_q[maxNTracks],
+	       exRaEl_th_q[maxNTracks], exRaEl_xB  [maxNTracks], exRaEl_q3m [maxNTracks], exRaEl_q_x [maxNTracks],
+	       exRaEl_q_y [maxNTracks], exRaEl_q_z [maxNTracks], e_exRaEl_th[maxNTracks];
+
+	double exRaEl_Pmiss [maxNTracks], exRaEl_Pmiss_x[maxNTracks], exRaEl_Pmiss_y[maxNTracks], exRaEl_Pmiss_z[maxNTracks],
+	       exRaEl_Emiss [maxNTracks], p_exRaEl_thWe [maxNTracks], exRaEl_ph_bq  [maxNTracks], exRaEl_th_bq  [maxNTracks],
+	       exRaEl_ph_xq [maxNTracks], exRaEl_th_xq  [maxNTracks];
+
+	double e_exRaEl_deltaDp [maxNTracks], e_exRaEl_deltaP  [maxNTracks], e_exRaEl_deltaTh [maxNTracks], e_exRaEl_delta   [maxNTracks],
+	       e_exRaEl_mom     [maxNTracks], e_exRaEl_yptar   [maxNTracks], e_exRaEl_xptar   [maxNTracks], e_exRaEl_px      [maxNTracks],
+	       e_exRaEl_py      [maxNTracks], e_exRaEl_pz      [maxNTracks];
+
+	double p_exRaEl_deltaDp [maxNTracks], p_exRaEl_deltaP  [maxNTracks], p_exRaEl_deltaTh [maxNTracks], p_exRaEl_delta   [maxNTracks],
+	       p_exRaEl_mom     [maxNTracks], p_exRaEl_yptar   [maxNTracks], p_exRaEl_xptar   [maxNTracks], p_exRaEl_px      [maxNTracks],
+	       p_exRaEl_py      [maxNTracks], p_exRaEl_pz      [maxNTracks];
+
+	double Ra_Ebeam[maxNTracks], RaEl_Ebeam[maxNTracks];
+
+	// Beam energy branches
+	T->SetBranchAddress("Lrb.e"       , Ra_Ebeam   );
+	T->SetBranchAddress("Elb.e"       , RaEl_Ebeam );
 
 	// Checked against analyzer output?
 	double testE;
@@ -337,6 +341,61 @@ int main(int argc, char ** argv)
 	T->SetBranchAddress("EKLx.q_y"	   , exRa_q_y      );		// checked
 	T->SetBranchAddress("EKLx.q_z"	   , exRa_q_z      );		// checked
 	T->SetBranchAddress("EKLx.angle"   , e_exRa_th	   );		// checked		
+
+	// ----------------------------------------------------------------
+	// Left arm raster-corrected, extended-target,
+	// Eloss corrected primary kinematic class.
+	T->SetBranchAddress("EKLxe.Q2"     , exRaEl_Q2      );
+	T->SetBranchAddress("EKLxe.W2"     , exRaEl_W2      );
+	T->SetBranchAddress("EKLxe.nu"     , exRaEl_Nu      );
+	T->SetBranchAddress("EKLxe.ph_q"   , exRaEl_ph_q    );
+	T->SetBranchAddress("EKLxe.th_q"   , exRaEl_th_q    );
+	T->SetBranchAddress("EKLxe.x_bj"   , exRaEl_xB      );
+	T->SetBranchAddress("EKLxe.q3m"    , exRaEl_q3m     );
+	T->SetBranchAddress("EKLxe.q_x"    , exRaEl_q_x     );
+	T->SetBranchAddress("EKLxe.q_y"    , exRaEl_q_y     );
+	T->SetBranchAddress("EKLxe.q_z"    , exRaEl_q_z     );
+	T->SetBranchAddress("EKLxe.angle"  , e_exRaEl_th    );
+	// ----------------------------------------------------------------
+	// Right arm raster-corrected, extended-target,
+	// Eloss corrected secondary kinematic class.
+	T->SetBranchAddress("EKRxe.pmiss"   , exRaEl_Pmiss  );
+	T->SetBranchAddress("EKRxe.pmiss_x" , exRaEl_Pmiss_x);
+	T->SetBranchAddress("EKRxe.pmiss_y" , exRaEl_Pmiss_y);
+	T->SetBranchAddress("EKRxe.pmiss_z" , exRaEl_Pmiss_z);
+	T->SetBranchAddress("EKRxe.emiss"   , exRaEl_Emiss  );  
+	T->SetBranchAddress("EKRxe.xangle"  , p_exRaEl_thWe );
+	T->SetBranchAddress("EKRxe.ph_bq"   , exRaEl_ph_bq  );  
+	T->SetBranchAddress("EKRxe.th_bq"   , exRaEl_th_bq  );  
+	T->SetBranchAddress("EKRxe.ph_xq"   , exRaEl_ph_xq  );  
+	T->SetBranchAddress("EKRxe.th_xq"   , exRaEl_th_xq  );  
+	// ----------------------------------------------------------------
+	// Left track raster-corrected, extended-target,
+	// Eloss corrected.
+	//T->SetBranchAddress("EltL.delta_dp" , e_exRaEl_deltaDp  );
+	//T->SetBranchAddress("EltL.delta_p"  , e_exRaEl_deltaP   );
+	//T->SetBranchAddress("EltL.delta_th" , e_exRaEl_deltaTh  );
+	T->SetBranchAddress("EltL.dp"       , e_exRaEl_delta    );
+	T->SetBranchAddress("EltL.p"        , e_exRaEl_mom      );
+	T->SetBranchAddress("EltL.ph"       , e_exRaEl_yptar    );
+	T->SetBranchAddress("EltL.th"       , e_exRaEl_xptar    );
+	T->SetBranchAddress("EltL.px"       , e_exRaEl_px       );
+	T->SetBranchAddress("EltL.py"       , e_exRaEl_py       );
+	T->SetBranchAddress("EltL.pz"       , e_exRaEl_pz       );
+	// ----------------------------------------------------------------
+	// Right track raster-corrected, extended-target,
+	// Eloss corrected.
+	//T->SetBranchAddress("EltR.delta_dp" , p_exRaEl_deltaDp  );
+	//T->SetBranchAddress("EltR.delta_p"  , p_exRaEl_deltaP   );
+	//T->SetBranchAddress("EltR.delta_th" , p_exRaEl_deltaTh  );
+	T->SetBranchAddress("EltR.dp"       , p_exRaEl_delta    );
+	T->SetBranchAddress("EltR.p"        , p_exRaEl_mom      );
+	T->SetBranchAddress("EltR.ph"       , p_exRaEl_yptar    );
+	T->SetBranchAddress("EltR.th"       , p_exRaEl_xptar    );
+	T->SetBranchAddress("EltR.px"       , p_exRaEl_px       );
+	T->SetBranchAddress("EltR.py"       , p_exRaEl_py       );
+	T->SetBranchAddress("EltR.pz"       , p_exRaEl_pz       );
+	// ----------------------------------------------------------------
 	// Corrections from extended target -- to be used on:
 	// 	exL.delta_th + L.tr.tg_th  == exL.th
 	//   and etc...
@@ -451,9 +510,24 @@ int main(int argc, char ** argv)
 		sk_BCMcharge		,	sk_BCMcurr		,
 		sk_BCMrenew 		;
 
+	double sk_exRaEl_Q2,		sk_exRaEl_W2,		sk_exRaEl_Nu,		sk_exRaEl_ph_q,		sk_exRaEl_th_q,	sk_exRaEl_xB,
+	       sk_exRaEl_q3m,		sk_exRaEl_q_x,		sk_exRaEl_q_y,		sk_exRaEl_q_z,		sk_e_exRaEl_th,	sk_exRaEl_Pmiss,
+	       sk_exRaEl_Pmiss_x,	sk_exRaEl_Pmiss_y,	sk_exRaEl_Pmiss_z,	sk_exRaEl_Emiss,	sk_p_exRaEl_thWe,
+	       sk_exRaEl_ph_bq,		sk_exRaEl_th_bq,	sk_exRaEl_ph_xq,	sk_exRaEl_th_xq,
+	       /*sk_e_exRaEl_deltaDp,	sk_e_exRaEl_deltaP,	sk_e_exRaEl_deltaTh,*/
+	       sk_e_exRaEl_delta,	sk_e_exRaEl_mom,	sk_e_exRaEl_yptar,
+	       sk_e_exRaEl_xptar,	sk_e_exRaEl_px,		sk_e_exRaEl_py,		sk_e_exRaEl_pz,
+	       /*sk_p_exRaEl_deltaDp,	sk_p_exRaEl_deltaP,	sk_p_exRaEl_deltaTh,*/
+	       sk_p_exRaEl_delta,	sk_p_exRaEl_mom,	sk_p_exRaEl_yptar,
+	       sk_p_exRaEl_xptar,	sk_p_exRaEl_px,		sk_p_exRaEl_py,		sk_p_exRaEl_pz;
+
+	double sk_Ra_Ebeam, sk_RaEl_Ebeam;
 
 	// exL.px/py/pz we can get phi
 	// and from EKLx.angle we have theta
+
+	outtree -> Branch("Ra_Ebeam"            ,&sk_Ra_Ebeam           ,"Ra_Ebeam/D"           );
+	outtree -> Branch("RaEl_Ebeam"          ,&sk_RaEl_Ebeam         ,"RaEl_Ebeam/D"         );
 
 	outtree -> Branch("L_prl1"		,&sk_e_prl1		,"L_prl1/D"		);
 	outtree -> Branch("L_prl2"		,&sk_e_prl2		,"L_prl2/D"		);
@@ -607,6 +681,48 @@ int main(int argc, char ** argv)
 	outtree -> Branch("R_ext_py"		,&sk_p_ext_py		,"R_ext_py/D"		);
 	outtree -> Branch("R_ext_pz"		,&sk_p_ext_pz		,"R_ext_pz/D"		);	
 
+	outtree -> Branch("exRaEl_Q2"		,&sk_exRaEl_Q2		,"exRaEl_Q2/D"          );
+	outtree -> Branch("exRaEl_W2"		,&sk_exRaEl_W2		,"exRaEl_W2/D"          );
+	outtree -> Branch("exRaEl_Nu"		,&sk_exRaEl_Nu		,"exRaEl_Nu/D"          );
+	outtree -> Branch("exRaEl_ph_q"		,&sk_exRaEl_ph_q	,"exRaEl_ph_q/D"        );
+	outtree -> Branch("exRaEl_th_q"		,&sk_exRaEl_th_q	,"exRaEl_th_q/D"        );
+	outtree -> Branch("exRaEl_xB"		,&sk_exRaEl_xB		,"exRaEl_xB/D"          );
+	outtree -> Branch("exRaEl_q3m"		,&sk_exRaEl_q3m		,"exRaEl_q3m/D"         );
+	outtree -> Branch("exRaEl_q_x"		,&sk_exRaEl_q_x		,"exRaEl_q_x/D"         );
+	outtree -> Branch("exRaEl_q_y"		,&sk_exRaEl_q_y		,"exRaEl_q_y/D"         );
+	outtree -> Branch("exRaEl_q_z"		,&sk_exRaEl_q_z		,"exRaEl_q_z/D"         );
+	outtree -> Branch("e_exRaEl_th"		,&sk_e_exRaEl_th	,"e_exRaEl_th/D"        );
+	outtree -> Branch("exRaEl_Pmiss"	,&sk_exRaEl_Pmiss	,"exRaEl_Pmiss/D"       );
+	outtree -> Branch("exRaEl_Pmiss_x"	,&sk_exRaEl_Pmiss_x	,"exRaEl_Pmiss_x/D"     );
+	outtree -> Branch("exRaEl_Pmiss_y"	,&sk_exRaEl_Pmiss_y	,"exRaEl_Pmiss_y/D"     );
+	outtree -> Branch("exRaEl_Pmiss_z"	,&sk_exRaEl_Pmiss_z	,"exRaEl_Pmiss_z/D"     );
+	outtree -> Branch("exRaEl_Emiss"	,&sk_exRaEl_Emiss	,"exRaEl_Emiss/D"       );
+	outtree -> Branch("p_exRaEl_thWe"	,&sk_p_exRaEl_thWe	,"p_exRaEl_thWe/D"      );
+	outtree -> Branch("exRaEl_ph_bq"	,&sk_exRaEl_ph_bq	,"exRaEl_ph_bq/D"       );
+	outtree -> Branch("exRaEl_th_bq"	,&sk_exRaEl_th_bq	,"exRaEl_th_bq/D"       );
+	outtree -> Branch("exRaEl_ph_xq"	,&sk_exRaEl_ph_xq	,"exRaEl_ph_xq/D"       );
+	outtree -> Branch("exRaEl_th_xq"	,&sk_exRaEl_th_xq	,"exRaEl_th_xq/D"       );
+	//outtree -> Branch("e_exRaEl_deltaDp"	,&sk_e_exRaEl_deltaDp	,"e_exRaEl_deltaDp/D"   );	// These don't exist for this class
+	//outtree -> Branch("e_exRaEl_deltaP"	,&sk_e_exRaEl_deltaP	,"e_exRaEl_deltaP/D"    );	// These don't exist for this class
+	//outtree -> Branch("e_exRaEl_deltaTh"	,&sk_e_exRaEl_deltaTh	,"e_exRaEl_deltaTh/D"   );	// These don't exist for this class
+	outtree -> Branch("e_exRaEl_delta"	,&sk_e_exRaEl_delta	,"e_exRaEl_delta/D"     );
+	outtree -> Branch("e_exRaEl_mom"	,&sk_e_exRaEl_mom	,"e_exRaEl_mom/D"       );
+	outtree -> Branch("e_exRaEl_yptar"	,&sk_e_exRaEl_yptar	,"e_exRaEl_yptar/D"     );
+	outtree -> Branch("e_exRaEl_xptar"	,&sk_e_exRaEl_xptar	,"e_exRaEl_xptar/D"     );
+	outtree -> Branch("e_exRaEl_px"		,&sk_e_exRaEl_px	,"e_exRaEl_px/D"        );
+	outtree -> Branch("e_exRaEl_py"		,&sk_e_exRaEl_py	,"e_exRaEl_py/D"        );
+	outtree -> Branch("e_exRaEl_pz"		,&sk_e_exRaEl_pz	,"e_exRaEl_pz/D"        );
+	//outtree -> Branch("p_exRaEl_deltaDp"	,&sk_p_exRaEl_deltaDp	,"p_exRaEl_deltaDp/D"   );	// These don't exist for this class
+	//outtree -> Branch("p_exRaEl_deltaP"	,&sk_p_exRaEl_deltaP	,"p_exRaEl_deltaP/D"    );	// These don't exist for this class
+	//outtree -> Branch("p_exRaEl_deltaTh"	,&sk_p_exRaEl_deltaTh	,"p_exRaEl_deltaTh/D"   );	// These don't exist for this class
+	outtree -> Branch("p_exRaEl_delta"	,&sk_p_exRaEl_delta	,"p_exRaEl_delta/D"     );
+	outtree -> Branch("p_exRaEl_mom"	,&sk_p_exRaEl_mom	,"p_exRaEl_mom/D"       );
+	outtree -> Branch("p_exRaEl_yptar"	,&sk_p_exRaEl_yptar	,"p_exRaEl_yptar/D"     );
+	outtree -> Branch("p_exRaEl_xptar"	,&sk_p_exRaEl_xptar	,"p_exRaEl_xptar/D"     );
+	outtree -> Branch("p_exRaEl_px"		,&sk_p_exRaEl_px	,"p_exRaEl_px/D"        );
+	outtree -> Branch("p_exRaEl_py"		,&sk_p_exRaEl_py	,"p_exRaEl_py/D"        );
+	outtree -> Branch("p_exRaEl_pz"		,&sk_p_exRaEl_pz	,"p_exRaEl_pz/D"        );
+
 	outtree -> Branch("Kin_L_thetaC"	,&sk_kin_eThetaC	,"Kin_L_thetaC/D"	);
 	outtree -> Branch("Kin_R_thetaC"	,&sk_kin_pThetaC	,"Kin_R_thetaC/D"	);
 	outtree -> Branch("Kin_L_momC"		,&sk_kin_eMomC		,"Kin_L_momC/D"		);
@@ -649,6 +765,9 @@ int main(int argc, char ** argv)
 			cerr << "Working on event " << event << " out of " << nEvents << "\n";
 		/////////////////////////////////////////////////////////////////////////////////////////////
 		// Memory set the arrays to avoid weird shit
+		memset( Ra_Ebeam		,-999		,sizeof(Ra_Ebeam)       );
+		memset( RaEl_Ebeam		,-999		,sizeof(RaEl_Ebeam)     );
+
 		memset(	e_cer			,-999		,sizeof(e_cer)		);
 		memset(	e_prl1			,-999		,sizeof(e_prl1)		);
 		memset(	e_prl2			,-999		,sizeof(e_prl2)		);
@@ -806,6 +925,48 @@ int main(int argc, char ** argv)
 		memset( p_ext_py		,-999		,sizeof(p_ext_py)	);
 		memset( p_ext_pz		,-999		,sizeof(p_ext_pz)	);
 
+		memset( exRaEl_Q2		,-999           ,sizeof(exRaEl_Q2)		);
+		memset( exRaEl_W2		,-999           ,sizeof(exRaEl_W2)		);
+		memset( exRaEl_Nu		,-999           ,sizeof(exRaEl_Nu)		);
+		memset( exRaEl_ph_q		,-999           ,sizeof(exRaEl_ph_q)		);
+		memset( exRaEl_th_q		,-999           ,sizeof(exRaEl_th_q)		);
+		memset( exRaEl_xB		,-999           ,sizeof(exRaEl_xB)		);
+		memset( exRaEl_q3m		,-999           ,sizeof(exRaEl_q3m)		);
+		memset( exRaEl_q_x		,-999           ,sizeof(exRaEl_q_x)		);
+		memset( exRaEl_q_y		,-999           ,sizeof(exRaEl_q_y)		);
+		memset( exRaEl_q_z		,-999           ,sizeof(exRaEl_q_z)		);
+		memset( e_exRaEl_th		,-999           ,sizeof(e_exRaEl_th)		);
+		memset( exRaEl_Pmiss		,-999           ,sizeof(exRaEl_Pmiss)		);
+		memset( exRaEl_Pmiss_x		,-999           ,sizeof(exRaEl_Pmiss_x)		);
+		memset( exRaEl_Pmiss_y		,-999           ,sizeof(exRaEl_Pmiss_y)		);
+		memset( exRaEl_Pmiss_z		,-999           ,sizeof(exRaEl_Pmiss_z)		);
+		memset( exRaEl_Emiss		,-999           ,sizeof(exRaEl_Emiss)		);
+		memset( p_exRaEl_thWe		,-999           ,sizeof(p_exRaEl_thWe)		);
+		memset( exRaEl_ph_bq		,-999           ,sizeof(exRaEl_ph_bq)		);
+		memset( exRaEl_th_bq		,-999           ,sizeof(exRaEl_th_bq)		);
+		memset( exRaEl_ph_xq		,-999           ,sizeof(exRaEl_ph_xq)		);
+		memset( exRaEl_th_xq		,-999           ,sizeof(exRaEl_th_xq)		);
+		//memset( e_exRaEl_deltaDp	,-999           ,sizeof(e_exRaEl_deltaDp)	);
+		//memset( e_exRaEl_deltaP		,-999           ,sizeof(e_exRaEl_deltaP)	);
+		//memset( e_exRaEl_deltaTh	,-999           ,sizeof(e_exRaEl_deltaTh)	);
+		memset( e_exRaEl_delta		,-999           ,sizeof(e_exRaEl_delta)		);
+		memset( e_exRaEl_mom		,-999           ,sizeof(e_exRaEl_mom)		);
+		memset( e_exRaEl_yptar		,-999           ,sizeof(e_exRaEl_yptar)		);
+		memset( e_exRaEl_xptar		,-999           ,sizeof(e_exRaEl_xptar)		);
+		memset( e_exRaEl_px		,-999           ,sizeof(e_exRaEl_px)		);
+		memset( e_exRaEl_py		,-999           ,sizeof(e_exRaEl_py)		);
+		memset( e_exRaEl_pz		,-999           ,sizeof(e_exRaEl_pz)		);
+		//memset( p_exRaEl_deltaDp	,-999           ,sizeof(p_exRaEl_deltaDp)	);
+		//memset( p_exRaEl_deltaP		,-999           ,sizeof(p_exRaEl_deltaP)	);
+		//memset( p_exRaEl_deltaTh	,-999           ,sizeof(p_exRaEl_deltaTh)	);
+		memset( p_exRaEl_delta		,-999           ,sizeof(p_exRaEl_delta)		);
+		memset( p_exRaEl_mom		,-999           ,sizeof(p_exRaEl_mom)		);
+		memset( p_exRaEl_yptar		,-999           ,sizeof(p_exRaEl_yptar)		);
+		memset( p_exRaEl_xptar		,-999           ,sizeof(p_exRaEl_xptar)		);
+		memset( p_exRaEl_px		,-999           ,sizeof(p_exRaEl_px)		);
+		memset( p_exRaEl_py		,-999           ,sizeof(p_exRaEl_py)		);
+		memset( p_exRaEl_pz		,-999           ,sizeof(p_exRaEl_pz)		);
+
 		memset( BCMcharge		,-999		,sizeof(BCMcharge)	);
 		memset( BCMcurr			,-999		,sizeof(BCMcurr)	);
 		memset( BCMrenew		,-999		,sizeof(BCMrenew)	);
@@ -837,6 +998,8 @@ int main(int argc, char ** argv)
 		sk_kin_Ebeam 	=	Ebeam		;
 		sk_kin_Q	=	totalQ_mC	;	
 
+		sk_Ra_Ebeam             = Ra_Ebeam      [0];
+		sk_RaEl_Ebeam           = RaEl_Ebeam    [0];
 
 		sk_e_cer		= e_cer		[0];
 		sk_e_prl1		= e_prl1	[0];
@@ -969,6 +1132,49 @@ int main(int argc, char ** argv)
 		sk_p_ext_px		= p_ext_px	[0];
 		sk_p_ext_py		= p_ext_py	[0];
 		sk_p_ext_pz		= p_ext_pz	[0];
+
+		sk_exRaEl_Q2            = exRaEl_Q2        [0];
+		sk_exRaEl_W2            = exRaEl_W2        [0];
+		sk_exRaEl_Nu            = exRaEl_Nu        [0];
+		sk_exRaEl_ph_q          = exRaEl_ph_q      [0];
+		sk_exRaEl_th_q          = exRaEl_th_q      [0];
+		sk_exRaEl_xB            = exRaEl_xB        [0];
+		sk_exRaEl_q3m           = exRaEl_q3m       [0];
+		sk_exRaEl_q_x           = exRaEl_q_x       [0];
+		sk_exRaEl_q_y           = exRaEl_q_y       [0];
+		sk_exRaEl_q_z           = exRaEl_q_z       [0];
+		sk_e_exRaEl_th          = e_exRaEl_th      [0];
+		sk_exRaEl_Pmiss         = exRaEl_Pmiss     [0];
+		sk_exRaEl_Pmiss_x       = exRaEl_Pmiss_x   [0];
+		sk_exRaEl_Pmiss_y       = exRaEl_Pmiss_y   [0];
+		sk_exRaEl_Pmiss_z       = exRaEl_Pmiss_z   [0];
+		sk_exRaEl_Emiss         = exRaEl_Emiss     [0];
+		sk_p_exRaEl_thWe        = p_exRaEl_thWe    [0];
+		sk_exRaEl_ph_bq         = exRaEl_ph_bq     [0];
+		sk_exRaEl_th_bq         = exRaEl_th_bq     [0];
+		sk_exRaEl_ph_xq         = exRaEl_ph_xq     [0];
+		sk_exRaEl_th_xq         = exRaEl_th_xq     [0];
+		//sk_e_exRaEl_deltaDp     = e_exRaEl_deltaDp [0];
+		//sk_e_exRaEl_deltaP      = e_exRaEl_deltaP  [0];
+		//sk_e_exRaEl_deltaTh     = e_exRaEl_deltaTh [0];
+		sk_e_exRaEl_delta       = e_exRaEl_delta   [0];
+		sk_e_exRaEl_mom         = e_exRaEl_mom     [0];
+		sk_e_exRaEl_yptar       = e_exRaEl_yptar   [0];
+		sk_e_exRaEl_xptar       = e_exRaEl_xptar   [0];
+		sk_e_exRaEl_px          = e_exRaEl_px      [0];
+		sk_e_exRaEl_py          = e_exRaEl_py      [0];
+		sk_e_exRaEl_pz          = e_exRaEl_pz      [0];
+		//sk_p_exRaEl_deltaDp     = p_exRaEl_deltaDp [0];
+		//sk_p_exRaEl_deltaP      = p_exRaEl_deltaP  [0];
+		//sk_p_exRaEl_deltaTh     = p_exRaEl_deltaTh [0];
+		sk_p_exRaEl_delta       = p_exRaEl_delta   [0];
+		sk_p_exRaEl_mom         = p_exRaEl_mom     [0];
+		sk_p_exRaEl_yptar       = p_exRaEl_yptar   [0];
+		sk_p_exRaEl_xptar       = p_exRaEl_xptar   [0];
+		sk_p_exRaEl_px          = p_exRaEl_px      [0];
+		sk_p_exRaEl_py          = p_exRaEl_py      [0];
+		sk_p_exRaEl_pz          = p_exRaEl_pz      [0];
+
 		sk_BCMcurr		= BCMcurr	[0];
 		sk_BCMcharge		= BCMcharge	[0];
 		sk_BCMrenew		= BCMrenew	[0];
