@@ -1238,67 +1238,59 @@ int main(int argc, char ** argv)
 // ====================================================================================================
 double get_kin(const char * kin, double &e_th, double &e_p, double &p_th, double &p_p)
 {
+	// ----------------------------------------------------------------
 	if (strcmp(kin,"fast")==0)
 	{
-		// THESE NUMBERS UPDATED BASED ON EPICS DATA
-		e_th = 20.892 * TMath::DegToRad();
-		e_p  = 3.54332; // GeV/c
-		p_th = 48.8094 * TMath::DegToRad();
-		p_p  = 1.4805; // GeV/c
+		e_th = 20.8837 * TMath::DegToRad();
+		e_p  = 3.54334; // GeV/c
+		p_th = 48.8207 * TMath::DegToRad();
+		p_p  = 1.48051; // GeV/c
 		cout << "Assuming fast kinematics\n(LHRS: p="<<e_p<<"GeV, Th="<< e_th<<"rad. RHRS: p="
 			<<p_p<<"GeV, Th="<<p_th<<"rad)"<<endl;
 	}
+	// ----------------------------------------------------------------
 	else if (strcmp(kin,"fast2")==0)
 	{
-		// THESE NUMBERS UPDATED BASED ON EPICS DATA
-		e_th = 20.8798 * TMath::DegToRad();
+		e_th = 20.8812 * TMath::DegToRad();
 		e_p  = 3.5433; // GeV/c
-		p_th = 48.799 * TMath::DegToRad();
+		p_th = 48.8187 * TMath::DegToRad();
 		p_p  = 1.48051; // GeV/c
 		cout << "Assuming fast2 kinematics\n(LHRS: p="<<e_p<<"GeV, Th="<< e_th<<"rad. RHRS: p="
 			<<p_p<<"GeV, Th="<<p_th<<"rad)"<<endl;
 	}
+	// ----------------------------------------------------------------
 	else if (strcmp(kin,"slow")==0)
 	{
-		// THESE ANGLES HAVE BEEN UPDATED BASED ON THE SURVEY DONE
-		// 	still need to ''move rear jacks along tangent???
-		// The momenta updated based on EPICs data
-		e_th = 20.892 * TMath::DegToRad(); //20.88 * TMath::DegToRad();
-		e_p  = 3.54332; // GeV/c
-		p_th = 58.490 * TMath::DegToRad(); //58.50 * TMath::DegToRad();
+		e_th = 20.8812 * TMath::DegToRad();
+		e_p  = 3.54331; // GeV/c
+		p_th = 58.5031 * TMath::DegToRad();
 		p_p  = 1.246; // GeV/c
 		cout << "Assuming slow kinematics\n(LHRS: p="<<e_p<<"GeV, Th="<< e_th<<"rad. RHRS: p="
 			<<p_p<<"GeV, Th="<<p_th<<"rad)"<<endl;
 	}
+	// ----------------------------------------------------------------
 	else if (strcmp(kin,"mid")==0)
 	{
-		// THESE NUMBERS UPDATED BASED ON EPICS DATA
-		e_th = 17.8018* TMath::DegToRad(); //17.8003 * TMath::DegToRad();
-		e_p  = 3.54334;//3.54334; // GeV/c
-		p_th = -48.82* TMath::DegToRad(); //48.8094 * TMath::DegToRad(); 
-		p_p  = 1.4805; //1.4805; // GeV/c
-
-		// Add corrections found in Efrain toy-analysis for mid
-		//e_th += 0.00067;
-		//p_th += 0.000445557;
-		//e_p   += -0.000268191;
-		//p_p   += -0.000390631; 	
-
+		e_th = 17.8017* TMath::DegToRad();
+		e_p  = 3.54334;// GeV/c
+		p_th = 48.8207* TMath::DegToRad();
+		p_p  = 1.4805; // GeV/c
 
 		cout << "Assuming mid kinematics\n(LHRS: p="<<e_p<<"GeV, Th="<< e_th<<"rad. RHRS: p="
 			<< p_p<<"GeV, Th="<<p_th<<"rad)"<<endl;
 	}
+	// ----------------------------------------------------------------
 	else if (strcmp(kin,"mid2")==0)
 	{
-		// THESE ANGLES UPDATED BASED ON LVDT DATA
 		e_th = 17.8053* TMath::DegToRad(); 
-		e_p  = 3.54334;// GeV/c
-		p_th = -48.8188* TMath::DegToRad(); 
+		e_p  = 3.5433;// GeV/c
+		p_th = 48.8188* TMath::DegToRad(); 
 		p_p  = 1.4805; // GeV/c
 
 		cout << "Assuming mid2 kinematics\n(LHRS: p="<<e_p<<"GeV, Th="<< e_th<<"rad. RHRS: p="
 			<< p_p<<"GeV, Th="<<p_th<<"rad)"<<endl;
 	}
+	// ----------------------------------------------------------------
 	else
 	{
 		cerr << "You asked for the following kinematics: " << kin << "\n";
